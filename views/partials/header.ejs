@@ -1,0 +1,16 @@
+<header class="header">
+    <a href="/" class="brand">URL Shortener</a>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/profile">Dashboard</a>
+
+    <% if (!user) { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    <% } else { %>
+        <a href="/logout">Logout</a>
+    <% } %>
+</nav>
+
+</header>

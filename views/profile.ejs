@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+
+    <!-- HEADER PARTIAL -->
+    <%- include("partials/header") %>
+
+    <!-- PROFILE CONTENT -->
+    <main class="profile-container">
+        <div class="profile-card">
+
+            <div class="profile-avatar">
+                <span><%= user.name.charAt(0).toUpperCase() %></span>
+            </div>
+
+            <h1 class="profile-name"><%= user.name %></h1>
+            <p class="profile-email"><%= user.email %></p>
+
+            <div class="profile-info">
+                <div class="info-row">
+                    <span class="label">User ID</span>
+                    <span class="value"><%= user.id %></span>
+                </div>
+
+                <div class="info-row">
+                    <span class="label">Account Type</span>
+                    <span class="value">Standard</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <a href="/" class="btn-secondary">Back to Dashboard</a>
+                <a href="/logout" class="btn-danger">Logout</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER PARTIAL -->
+    <%- include("partials/footer") %>
+
+</body>
+</html>

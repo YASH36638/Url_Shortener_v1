@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/index.css">
+    <title>Edit Short URL</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Short URL</h2>
+
+        <% if (errors) { %>
+            <div class="flash-error">
+                <%= errors %>
+            </div>
+        <% } %>
+
+        <form action="/edit/<%= id %>" method="POST">
+
+            <input
+                type="text"
+                name="url"
+                value="<%= link?.url || '' %>"
+                placeholder="Enter new URL"
+                required
+            />
+
+            <input
+                type="text"
+                name="shortCode"
+                value="<%= link?.shortCode || '' %>"
+                placeholder="Enter custom shortcode"
+                required
+            />
+
+            <button type="submit">Update</button>
+        </form>
+
+        <a href="/">← Back</a>
+    </div>
+</body>
+</html>

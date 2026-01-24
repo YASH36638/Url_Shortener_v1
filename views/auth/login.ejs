@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | URL Shortener</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Optional: external CSS -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<%- include('../partials/header') %>
+
+    <div class="auth-container">
+        <h1>Login</h1>
+        <p class="subtitle">Access your shortened URLs</p>
+
+        <% if (typeof error !== 'undefined') { %>
+            <div class="error"><%= error %></div>
+        <% } %>
+
+        <% if (typeof success !== 'undefined') { %>
+            <div class="success"><%= success %></div>
+        <% } %>
+
+        <form action="/login" method="POST" class="auth-form">
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+
+            <% if(errors && errors.length>0 )
+            {
+                 %> <%  errors.forEach((error)=>
+                {
+                    %> 
+                    <p class="flash-error"> <%= errors%></p>
+                    <%
+                }); %> <%
+            }
+            %>
+
+
+            <button type="submit" class="btn-primary">
+                Login
+            </button>
+
+        </form>
+
+        <p class="redirect-text">
+            Don’t have an account?
+            <a href="/register">Create one</a>
+        </p>
+
+    </div>
+<%- include('../partials/footer') %>
+</body>
+</html>
