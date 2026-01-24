@@ -6,3 +6,9 @@ node_modules/
 
 # Logs
 *.log
+
+/mongodb
+
+/config/db-client.js
+
+/config/env.js
