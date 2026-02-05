@@ -8,7 +8,7 @@ import { verifyJWT } from './Middleware/auth.middleware.js';
 import {Shortened} from './Routess/Routes.js'
 import { authRoutes } from './Routess/auth.routes.js';
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
