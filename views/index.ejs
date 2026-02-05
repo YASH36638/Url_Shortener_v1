@@ -10,9 +10,7 @@
 
 <body>
         <%- include('partials/header') %> 
-        <!-- <% if(user) {%> <h2>Logged In</h2> <% } else
-        {%> <h2>Log in first</h2> <%}
-        %> -->
+       
 
     <div id="container">
     <img src="/favicon.png" alt="Logo" class="logo">
@@ -60,7 +58,6 @@
           <a href="/edit/<%= link.id %>" class="small-btn edit-btn">
     Edit
   </a>
-  <!-- <a href="/delete/<%= link.id %>">Edit</a> -->
   <form action="/delete/<%= link.id %>" method="POST" class="delete-form">
     <button
       type="submit"

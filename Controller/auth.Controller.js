@@ -9,26 +9,22 @@ import { getUserByEmail, addToDb, validUser, redirectUserHomePage,
      createUserwithOauth,
      getUserbyId,
      updateUserProfile} from "../services/auth.services.js";
-// import { validUser } from "../services/auth.services.js";
-// import { generateToken } from "../services/auth.services.js";
+
 import {decodeIdToken, generateCodeVerifier, generateState} from "arctic";
 import { db } from "../DrizzleORM/config/db.js";
-import { sessionsTable, Users } from "../DrizzleORM/drizzle/schema.js";
+import { sessionsTable } from "../DrizzleORM/drizzle/schema.js";
 import { eq } from "drizzle-orm";
 import { emailSchema, passwordSchema,
- registerUserSchema, setPasswordSchema, userSchema } from "../Validator/auth.validation.js";
+        registerUserSchema, setPasswordSchema, 
+        userSchema } from "../Validator/auth.validation.js";
+
 import { shortenerSchema } from "../Validator/shortner.validator.js";
-import argon2  from "argon2";
 import { getHtmlFromMjmlTempplate } from "../libv/get-html-from-mjml.js";
 import { sendEmail } from "../libv/send-email.js";
 import { OAUTH_EXCHANGE_EXPIRY } from "../config/constant.js";
 import { google } from "../libv/oauth/google.js";
 import { github } from "../libv/oauth/github.js";
 
-// import { is } from "zod/v4/locales";
-// import { email } from "zod";
-
-// import { createSession,createAccessToken, createRefreshToken  } from "../services/auth.services.js";
 
 export const getRegisterPage = (req, res) => {
     res.render("auth/register", { errors: req.flash("errors") });
@@ -40,7 +36,6 @@ export const getLoginPage = (req, res) => {
 
 export const postLogin = async (req, res) => {
     if (req.user) return res.redirect("/");
-    // res.setHeader("Set-Cookie","isLoggedIn=true; path=/;")
     const { email, password } = req.body;
     const result = await validUser({ email, password });
     
@@ -59,7 +54,6 @@ export const postLogin = async (req, res) => {
     req.flash("success", result.reason);
     redirectUserHomePage(req, res, data);
 
-    // return res.redirect("/");
 }
 
 export const postRegister = async (req, res) => {
@@ -68,6 +62,7 @@ export const postRegister = async (req, res) => {
         return res.redirect("/");
     }
 
+    console.log();
     const result = registerUserSchema.safeParse(req.body);
 
     if (!result.success) {
@@ -83,7 +78,15 @@ export const postRegister = async (req, res) => {
         req.flash("errors", "User with email Exists")
         return res.redirect("/register");
     }
+
+    if(password!==req.body.confirmPassword)
+    {
+        req.flash("errors","Confirm Password and password do not match")
+        return res.redirect("/register");
+    }
+    
     const [regUser] = await addToDb({ name, email, password });
+
 
     const regData = {
         id: regUser.insertId,
@@ -94,8 +97,7 @@ export const postRegister = async (req, res) => {
     }
     await sendVerificationEmailLink({ userId: regUser.insertId, email: regData.email });
     redirectUserHomePage(req, res, regData);
-    // return res.redirect("/");
-    // res.redirect("/login");
+
 }
 
 export const getProfile = async (req, res) => {
@@ -105,9 +107,7 @@ export const getProfile = async (req, res) => {
     }
     const [user]=await getUserbyId(req.user.id);
     const totLinks = await getLinkCounts(req.user.id);
-    //    console.log("Total links for user:", totLinks);
-    // console.log("req.user:", req.user);
-    // console.log(user)
+    
     const userInfo = {
         id: req.user.id,
         name: req.user.name,
@@ -120,17 +120,11 @@ export const getProfile = async (req, res) => {
 
     }
 
-    //    console.log("userInfo:",userInfo);
     return res.render("profile", { user: userInfo , success: req.flash("success"), errors: req.flash("errors")});
 }
 
 export const logoutUser = async (req, res) => {
     if (req.user?.sessionId) {
-        // await db
-        //   .update(sessionsTable)
-        //   .set({ valid: false })
-        //   .where(eq(sessionsTable.id, req.user.sessionId));
-
         await db.delete(sessionsTable).where(eq(sessionsTable.id, req.user.sessionId));
     }
     res.clearCookie("access_token");
@@ -200,7 +194,6 @@ export const resendVerificationEmail = async (req, res) => {
 
 export const verifyEmailToken = async (req, res) => {
     const { token, email, userId } = req.query;
-    // console.log("Received token:", token, "email:", email);
 
     if (!token || !email) {
         return res.status(400).send("Invalid verification link");
@@ -264,7 +257,6 @@ export const getEditProfilePage = async (req, res) =>
 export const postEditProfile = async (req, res) =>
 {
     if(!req.user) return res.redirect("/login");
-    // console.log("1",req.body.name);
     const {name}=req.body;
     const result=userSchema.safeParse({name});
 
@@ -275,13 +267,6 @@ export const postEditProfile = async (req, res) =>
         return res.redirect("/edit-profile");
     }
     
-
-    // used when we only updated user name
-
-    // await db
-    // .update(Users)
-    // .set({name:result.data.name})
-    // .where(eq(Users.id,req.user.id));
 
     if (req.body.removeAvatar === 'true') {
     
@@ -323,7 +308,6 @@ export const getChangePasswordPage=async (req,res)=>
 export const postChangePassword=async (req,res)=>
 {
     const {currentPassword,newPassword,confirmPassword}=req.body;
-    // console.log("req.body",req.body);
     const result=passwordSchema.safeParse(req.body);
 
     if(!result.success)
@@ -388,7 +372,7 @@ export const postResetPassword=async(req,res)=>
         subject:"Reset your password",
         html,
     }).catch(console.error);
-    // console.log(html);
+
 
     }
     req.flash("formSubmitted",true);
@@ -399,7 +383,6 @@ export const postResetPassword=async(req,res)=>
 export const getResetPasswordWithTokenPage=async(req,res)=>
 {
     const {token}=req.params;
-    // console.log("req:",req.params);
     const passwordResetRecord=await getResetPasswordToken(token);
 
     if(!token)
@@ -478,12 +461,12 @@ export const getGoogleLoginPage=async(req,res)=>
         httpOnly:true,
         secure:true,
         sameSite:"lax",
-        maxAge:OAUTH_EXCHANGE_EXPIRY, //10 minutes
+        maxAge:OAUTH_EXCHANGE_EXPIRY,
     };
 
     res.cookie("google_oauth_state",state,cookieConfig);
     res.cookie("google_code_verifier",codeVerifier,cookieConfig);
-    // console.log(url)
+
     res.redirect(url.toString());
 
 }
@@ -491,7 +474,6 @@ export const getGoogleLoginPage=async(req,res)=>
 export const getGoogleLoginCallBack=async(req,res)=>
 {
     const {code,state}=req.query;
-    // console.log(code,state);
 
     const {
         google_oauth_state:storedState,
@@ -555,12 +537,12 @@ export const getGithubLoginPage=async(req,res)=>
         httpOnly:true,
         secure:true,
         sameSite:"lax",
-        maxAge:OAUTH_EXCHANGE_EXPIRY, //10 minutes
+        maxAge:OAUTH_EXCHANGE_EXPIRY, 
     };
 
     res.cookie("github_oauth_state",state,cookieConfig);
     // res.cookie("github",codeVerifier,cookieConfig); not required
-    // console.log(url)
+    
     res.redirect(url.toString());
 }
 

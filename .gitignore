@@ -19,3 +19,5 @@ public/avatars/
 node_modules/
 DrizzleORM/node_modules/
 DrizzleORM/.env
+
+libv/nodemailer.js

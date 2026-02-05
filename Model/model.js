@@ -5,24 +5,21 @@ import {db} from "../DrizzleORM/config/db.js"
 
 export const loadLinks=async(id)=>
 {
-    // console.log("req.user loadlinks ",id);
     return await db.select().from(shortLinksTable).where(eq(shortLinksTable.userId,id))
-    // return collect.find().toArray();
 };
 
 export const saveLinks=async(link)=>
 {
-    // console.log("req.user.id savelinks" , link.userId);
-    // return collect.insertOne(link);
-     const res=await db.insert(shortLinksTable).values({url:link.url,shortCode:link.code,userId:link.id});
+
+     const res=await db.insert(shortLinksTable).values({url:link.url,shortCode:link.safeCode,userId:link.id});
      return res;
 }
 
 export const getUrlByShortcode=async(code,id)=>
 {
-    // return collect.findOne({code:code});
+  
     const res=await db.select().from(shortLinksTable).where(and(eq(shortLinksTable.shortCode, code),eq(shortLinksTable.userId,id)));
-    // console.log(res);
+
     return res[0]??null;
 }
 
@@ -85,9 +82,7 @@ return await db
 export const getLinkCounts=async(userId)=>
 {
     let result=await db.select({ count: sql`count(*)` }).from(shortLinksTable).where(eq(shortLinksTable.userId,userId));
-    // console.log("Link count result:", result[0].count);
     let date=await db.select({date:sql`DATE(created_at)`}).from(Users).where(eq(Users.id,userId));
-    // console.log("User creation date:", date);
     result=Number(result[0].count);
     date=date[0].date;
 

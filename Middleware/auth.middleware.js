@@ -1,4 +1,5 @@
 // import jwt from "jsonwebtoken";
+import { R_TOKEN_TIME, TOKEN_AGE } from "../config/constant.js";
 import { refreshTokeni, verifyJWTToken } from "../services/auth.services.js";
 
 export const verifyJWT = async (req, res, next) => {
@@ -32,12 +33,12 @@ export const verifyJWT = async (req, res, next) => {
 
       res.cookie("access_token", accessToken, {
         ...baseConfig,
-        maxAge: 15 * 60 * 1000, //15 minutes
+        maxAge: TOKEN_AGE, //15 minutes
       });
 
       res.cookie("refresh_token", refreshToken, {
         ...baseConfig,
-        maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
+        maxAge:R_TOKEN_TIME, //7 days
       });
       req.isLoggedIn = true;
       return next();

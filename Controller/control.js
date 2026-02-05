@@ -1,11 +1,9 @@
 import { saveLinks,doExists } from "../Model/model.js";
 import crypto from 'crypto';
 import { urlValidator } from "../Validator/auth.validation.js";
-// import { shortenerSchema } from "../Validator/shortner.validator.js";
 
 
 export const postShortend=async (req, res) => {
-    // const links = await loadLinks();
     
     if(!req.isLoggedIn) return res.redirect("/login");
     const id=req.user.id;
@@ -16,7 +14,7 @@ export const postShortend=async (req, res) => {
         return res.redirect("/");
     }
     let { url, code } = req.body.user;
-
+    const safeCode=code.trim();
 
     if (!code || code.trim() === "") {
         code = crypto.randomBytes(4).toString('hex');
@@ -24,25 +22,18 @@ export const postShortend=async (req, res) => {
     if (!url) {
         return res.status(400).send("URL is required.");
     }
-    if (await doExists(code,id)) {
+    if (await doExists(safeCode,id)) {
         req.flash(
             "errors","Url with this shortcode exists,please choose another");
         return res.redirect("/");
     }
 
     // links[code] = url;
+    console.log(code);
     
-    await saveLinks({url,code,id});
+    console.log(safeCode);
+    await saveLinks({url,safeCode,id});
     res.redirect("/");
 }
 
-
-// export const deleteShortCode=(req,res)=>
-// {
-// try {
-//     const id=req.user.id;
-// } catch (error) {
-    
-// }
-// }
 

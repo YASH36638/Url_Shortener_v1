@@ -198,6 +198,7 @@ const sessionId=await createSession(data.id,{
         maxAge:7*24*60*60*1000, //7 days
     });
     
+    req.flash("success","Registered successfully");
     return res.redirect("/");
 
 }
