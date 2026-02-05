@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Verify-Email</title>
+</head>
+<body>
+    <%- include('../partials/header') %>
+     <div class="container">
+    <h2>Email Verification</h2>
+    <p>
+      We’ve sent a verification code and link to  
+      <strong><%= email %></strong>
+    </p>
+
+    <% if (error && error.length>0 ) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+
+    <% if (success && success.length>0) { %>
+      <div class="success"><%= success %></div>
+    <% } %>
+
+    <!-- OTP VERIFICATION -->
+    <form method="POST" action="/verify-email-token">
+      <input type="hidden" name="userId" value="<%= userId %>" />
+      <input type="hidden" name="email" value="<%= email %>" />
+      <label for="token">Enter 8-digit OTP</label>
+      <input
+        type="text"
+        id="token"
+        name="token"
+        maxlength="8"
+        placeholder="••••••"
+        required
+      />
+
+      <button type="submit">Verify OTP</button>
+    </form>
+
+    <div class="divider">
+      <span>OR</span>
+    </div>
+
+    <!-- LINK VERIFICATION -->
+    <!-- <div class="link-box">
+      <p>Verify using email link</p>
+      <a href="/verify-email">
+        Click here to verify email
+      </a>
+    </div> -->
+
+    <div class="link-box" style="margin-top: 20px;">
+      <a href="/resend-verification">
+        Resend verification email
+      </a>
+    </div>
+  </div>
+    <%- include('../partials/footer') %>
+</body>
+</html>

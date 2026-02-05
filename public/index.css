@@ -228,17 +228,24 @@ footer {
 
 /* Auth button */
 .btn-primary {
-    width: 100%;
-    padding: 14px;
-    margin-top: 10px;
+    text-decoration: none;
+    /* margin-top: 10px; */
     border: none;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     background: #1b2f5c;
     color: #ffffff;
-    font-size: 16px;
+    /* font-size: 16px; */
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+    /* transition: background 0.2s, transform 0.1s; */
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-primary:hover {
@@ -386,19 +393,75 @@ footer {
 
 /* Actions */
 .profile-actions {
-    display: flex;
-    gap: 12px;
+     display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .btn-secondary {
     flex: 1;
     padding: 12px;
     border-radius: 10px;
-    background: #eef1f6;
-    color: #1b2f5c;
+    
+     background: #eef2f7;
+  color: #1b2f5c;
     text-decoration: none;
     font-weight: 600;
     text-align: center;
+}
+
+.update-btn {
+  align-self: flex-start;
+  padding: 10px 24px;
+  min-width: 120px;
+  background-color: #1f2f5c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-form {
+  border: 1px solid #e3e8f2;
+  border-radius: 12px;
+  padding: 32px;              /* ⬅️ more inner space */
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.edit-form-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1f2f5c;
+}
+
+.update-btn:hover {
+  background-color: #162447;
+}
+
+/* .edit-container {
+  max-width: 520px;   
+  margin: 40px auto;  
+  padding: 0 16px;
+} */
+
+.edit-container {
+  width: 100%;
+  margin: 60px auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 1024px) {
+  .edit-container {
+    max-width: 720px;
+  }
 }
 
 .btn-secondary:hover {
@@ -409,11 +472,20 @@ footer {
     flex: 1;
     padding: 12px;
     border-radius: 10px;
-    background: #d9534f;
+     background: #e25555;
     color: #ffffff;
     text-decoration: none;
     font-weight: 600;
     text-align: center;
+    display: inline-flex;
+  align-items: center;
+  justify-content: center;
+display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1; 
+  vertical-align: middle; 
+
 }
 
 .btn-danger:hover {
@@ -473,3 +545,176 @@ footer {
 }
 
 
+.page-container {
+  width: 100%;
+  padding: 20px;
+}
+
+/* Card */
+.profile-card {
+  max-width: 420px;
+  margin: auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.card-title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Form group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+.form-group label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Inputs */
+.form-group input {
+  padding: 10px 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+}
+
+/* Button */
+.btn {
+  padding: 11px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Primary button */
+.primary-btn {
+  background-color: #4f46e5;
+  color: #ffffff;
+}
+
+.primary-btn:hover {
+  background-color: #4338ca;
+}
+
+.primary-btn:active {
+  transform: scale(0.98);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 24px 20px;
+  }
+
+  .card-title {
+    font-size: 20px;
+  }
+}
+
+/* login */
+
+/* Separator styling (The OR line) */
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    color: #666;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.separator span {
+    padding: 0 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* Social Buttons Container */
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Base Social Button Style */
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.btn-social i {
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+/* Google Button Colors */
+.btn-google {
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.btn-google:hover {
+    background-color: #f1f1f1;
+}
+
+/* GitHub Button Colors */
+.btn-github {
+    background-color: #24292e;
+    color: #ffffff;
+}
+
+.btn-github:hover {
+    background-color: #1a1e22;
+}
+
+.profile-avatar img {
+  width: 90px;
+  height: 100px;
+  object-fit: cover;   /* prevents stretching */
+  border-radius: 50%;  /* makes it circular */
+  display: block;
+}

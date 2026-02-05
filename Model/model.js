@@ -1,31 +1,7 @@
-// import { writeFile,readFile } from 'fs/promises';
-// import path from 'path';
-// import { R_DIR } from '../Routess/Routes.js';
+import { eq ,and, sql} from "drizzle-orm";
+import { shortLinksTable,Users, VerifyEmailTokens } from "../DrizzleORM/drizzle/schema.js";
 
-// import { dbclient } from "../config/db-client.js"
-import { eq ,and} from "drizzle-orm";
-import { shortLinksTable } from "../DrizzleORM/drizzle/schema.js";
 import {db} from "../DrizzleORM/config/db.js"
-// export const loadLinks = async () => {
-//     try {
-//         const data = await readFile(path.join(R_DIR, 'data', 'links.json'), 'utf-8');
-//         return JSON.parse(data);
-//     }
-//     catch (err) {
-//         if (err.code === 'ENOENT') {
-//             console.log("File not found, creating new one.");
-//             await writeFile(path.join(R_DIR, 'data', 'links.json'),"{}",'utf-8'); 
-//             return {};
-//         }
-//         throw err;
-//     }
-// }
-
-// export const saveLinks = async (links) => {
-//     await writeFile(path.join(R_DIR, 'data', 'links.json'), JSON.stringify(links, null, 2));
-// }
-// const db=dbclient.db(env.MONGODB_DATABASE_NAME);
-// const collect=db.collection('links')
 
 export const loadLinks=async(id)=>
 {
@@ -56,26 +32,32 @@ export const doExists=async(Code,userId)=>
         .select({ id: shortLinksTable.id })
         .from(shortLinksTable)
         .where(
-    and(
+        and(
       eq(shortLinksTable.shortCode, Code),
       eq(shortLinksTable.userId, userId)
     )
-  )
-        .limit(1);
+  ).limit(1);
     return res.length>0;    
 }
 
 export const deleteCode=async(linkId,id)=>
 {
-return await db.delete(shortLinksTable).where(and(eq(shortLinksTable.id, parseInt(linkId)),eq(shortLinksTable.userId,id)));
+return await db.delete(shortLinksTable)
+.where(and(
+    eq(shortLinksTable.id, parseInt(linkId)),
+    eq(shortLinksTable.userId,id)
+    ));
 }
 
 export const getUrlbyId=async(userId,linkId)=>
 {
     try {
-            const links=await db.select().from(shortLinksTable).where(and(eq(shortLinksTable.userId,userId),eq(shortLinksTable.id,parseInt(linkId))))
-        // console.log(links)
-    return links;
+        const links=await db.select().from(shortLinksTable)
+        .where(and(
+        eq(shortLinksTable.userId,userId),
+        eq(shortLinksTable.id,parseInt(linkId))
+        )); 
+        return links;
     } catch (error) {
         console.log(error);
         return null;
@@ -98,4 +80,40 @@ return await db
                 eq(shortLinksTable.userId, userId)
             )
         );
+}
+
+export const getLinkCounts=async(userId)=>
+{
+    let result=await db.select({ count: sql`count(*)` }).from(shortLinksTable).where(eq(shortLinksTable.userId,userId));
+    // console.log("Link count result:", result[0].count);
+    let date=await db.select({date:sql`DATE(created_at)`}).from(Users).where(eq(Users.id,userId));
+    // console.log("User creation date:", date);
+    result=Number(result[0].count);
+    date=date[0].date;
+
+    return {count:result,createdAt:date};
+}
+
+export const setEmailValid=async(email)=>
+{
+    return await db
+    .update(Users)
+    .set({ Validemail: true })
+    .where(eq(Users.email, email));
+}
+
+export const delTokens=async(token)=>
+{
+    await db
+        .delete(VerifyEmailTokens)
+        .where(eq(VerifyEmailTokens.token, token));
+}
+export const getVerifyTokenRecord=async(token,userId)=>
+{
+
+    return await db
+      .select()
+      .from(VerifyEmailTokens)
+      .where(and(eq(VerifyEmailTokens.token, token),eq(VerifyEmailTokens.userId, Number(userId))))
+      .limit(1);
 }

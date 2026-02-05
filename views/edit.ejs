@@ -8,8 +8,8 @@
     <title>Edit Short URL</title>
 </head>
 <body>
-    <div class="container">
-        <h2>Edit Short URL</h2>
+    <div class="edit-container">
+        <h3 class="edit-form-title">Edit Short URL</h3>
 
         <% if (errors) { %>
             <div class="flash-error">
@@ -17,12 +17,12 @@
             </div>
         <% } %>
 
-        <form action="/edit/<%= id %>" method="POST">
+        <form action="/edit/<%= id %>" method="POST" class="edit-form">
 
             <input
                 type="text"
                 name="url"
-                value="<%= link?.url || '' %>"
+                value="<%= link[0].url%>"
                 placeholder="Enter new URL"
                 required
             />
@@ -30,15 +30,15 @@
             <input
                 type="text"
                 name="shortCode"
-                value="<%= link?.shortCode || '' %>"
+                value="<%= link[0].shortCode || '' %>"
                 placeholder="Enter custom shortcode"
                 required
             />
 
-            <button type="submit">Update</button>
+            <button type="submit" class="update-btn">Update</button>
         </form>
-
-        <a href="/">← Back</a>
+        <br>
+        <a href="/" class="btn-secondary">← Back</a>
     </div>
 </body>
 </html>

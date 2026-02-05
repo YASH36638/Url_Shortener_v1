@@ -1,24 +1,53 @@
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
+import { refreshTokeni, verifyJWTToken } from "../services/auth.services.js";
 
-export const verifyJWT = (req, res, next) => {
-  const token = req.cookies?.access_token;
+export const verifyJWT = async (req, res, next) => {
+  const access_token = req.cookies?.access_token;
+  const refresh_token = req.cookies?.refresh_token;
 
-  if (!token) {
-    // console.log("No token found in cookies");
+  if (!access_token && !refresh_token) {
     req.isLoggedIn = false;
+    
     return next();
   }
+  
+    if (access_token)
+    {
+      try {
+              const decoded = verifyJWTToken(access_token);
+              req.user = decoded;
+              req.isLoggedIn = true;
+              return next();
+            } catch (err) 
+            {
+              // fall through to refresh token
+            }
+    }
 
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    req.user = decoded;
-    // console.log("user",req.user);
-    
-    req.isLoggedIn = true;
-  } catch (err) {
-    // console.log("Error verifying token:", err.message);
-    req.isLoggedIn = false;
+  if (refresh_token) {
+    try {
+      const { accessToken, refreshToken, user } = await refreshTokeni(refresh_token);
+      req.user = user;
+      const baseConfig = { httpOnly: true, secure: true, sameSite: "lax" };
+
+      res.cookie("access_token", accessToken, {
+        ...baseConfig,
+        maxAge: 15 * 60 * 1000, //15 minutes
+      });
+
+      res.cookie("refresh_token", refreshToken, {
+        ...baseConfig,
+        maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
+      });
+      req.isLoggedIn = true;
+      return next();
+    }
+    catch (error) {
+      req.isLoggedIn = false;
+      return next();
+    }
   }
+req.isLoggedIn = false;
+return next();
 
-  next();
-};
+  }

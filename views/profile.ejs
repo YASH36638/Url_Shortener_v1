@@ -13,34 +13,96 @@
 
     <!-- PROFILE CONTENT -->
     <main class="profile-container">
-        <div class="profile-card">
+      
+  <div class="profile-card">
+    
+   <% if (typeof success !== "undefined" && success.length > 0) { %>
+  <div class="success-message">
+    <p><%= success[0] %></p>
+  </div>
+<% } %>
+    <div class="profile-avatar">
+  <% if (user.avatarUrl) { %>
+    <img
+      src="<%= user.avatarUrl %>"
+      alt="Profile picture"
+      class="avatar-img"
+    >
+  <% } else { %>
+    <span class="avatar-letter">
+      <%= user.name.charAt(0).toUpperCase() %>
+    </span>
+  <% } %>
+</div>
 
-            <div class="profile-avatar">
-                <span><%= user.name.charAt(0).toUpperCase() %></span>
-            </div>
+    <h1 class="profile-name"><%= user.name %></h1>
+    <p class="profile-email"><%= user.email %></p>
 
-            <h1 class="profile-name"><%= user.name %></h1>
-            <p class="profile-email"><%= user.email %></p>
+    <div class="profile-info">
+      <div class="info-row">
+        <span class="label">User ID</span>
+        <span class="value"><%= user.id %></span>
+      </div>
 
-            <div class="profile-info">
-                <div class="info-row">
-                    <span class="label">User ID</span>
-                    <span class="value"><%= user.id %></span>
-                </div>
+      <div class="info-row">
+        <span class="label">Account Type</span>
+        <span class="value">Standard</span>
+      </div>
 
-                <div class="info-row">
-                    <span class="label">Account Type</span>
-                    <span class="value">Standard</span>
-                </div>
-            </div>
+      <!-- NEW -->
+      <div class="info-row">
+        <span class="label">Links Created</span>
+        <span class="value"><%= user.linksCount %></span>
+      </div>
 
-            <div class="profile-actions">
-                <a href="/" class="btn-secondary">Back to Dashboard</a>
-                <a href="/logout" class="btn-danger">Logout</a>
-            </div>
+      <!-- NEW -->
+      <div class="info-row">
+        <span class="label">Account Created</span>
+        <span class="value">
+          <%= new Date(user.createdAt).toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+          }) %>
+        </span>
+      </div>
+      <!-- Email Verification Status -->
+<div class="info-row">
+  <span class="label">Email Status</span>
 
-        </div>
-    </main>
+  <% if (user.isEmailValid) { %>
+    <span class="value verified">
+      ✅ Verified
+    </span>
+  <% } else { %>
+    <span class="value unverified">
+      ❌ Not Verified
+    </span>
+  <% } %>
+</div>
+    </div>
+
+    <div class="profile-actions">
+      <!-- <a href="/" class="btn-secondary">Back to Dashboard</a> -->
+
+      <% if(user.hasPassword) { %>
+      <a href="/change-password" class="btn-primary">Change Password</a>
+       <% } else { %>
+        <a href="/set-password" class="btn-primary">Set Password</a> <% } %>
+
+      <a href="/edit-profile" class="btn-primary">
+        Edit Profile</a>
+      <% if (!user.isEmailValid) { %>
+  <a href="/verify-email" class="btn-primary">
+    Verify Email
+  </a>
+<% } %>
+<a href="/logout" class="btn-danger">Logout</a>
+    </div>
+
+  </div>
+</main>
+
 
     <!-- FOOTER PARTIAL -->
     <%- include("partials/footer") %>

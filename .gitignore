@@ -12,3 +12,10 @@ node_modules/
 /config/db-client.js
 
 /config/env.js
+
+public/uploads/
+public/avatars/
+
+node_modules/
+DrizzleORM/node_modules/
+DrizzleORM/.env

@@ -13,7 +13,6 @@ export const getInterface=(
             
             
             const isLoggedIn = req.isLoggedIn;
-            // console.log("isLoggedIn value:", isLoggedIn);
             // console.log("req.isLoggedIn",req);
             // console.log("isLoggedIn",isLoggedIn)
             // console.log("entered getInterface");

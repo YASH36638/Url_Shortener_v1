@@ -12,7 +12,7 @@ const main=async()=>
 
 // Create
 const userTable=await db.select().from(usersTable);
-console.log(userTable)
+// console.log(userTable)
 
 }
 main().catch((error)=>

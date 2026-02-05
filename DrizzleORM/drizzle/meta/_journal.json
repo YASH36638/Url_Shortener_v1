@@ -5,8 +5,36 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1769104849360,
-      "tag": "0000_brown_meltdown",
+      "when": 1769531451781,
+      "tag": "0000_useful_namor",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1770063104112,
+      "tag": "0001_shiny_joshua_kane",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1770157366731,
+      "tag": "0002_solid_mongoose",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1770158439367,
+      "tag": "0003_hard_medusa",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1770242584861,
+      "tag": "0004_loving_wild_child",
       "breakpoints": true
     }
   ]
