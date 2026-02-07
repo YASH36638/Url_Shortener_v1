@@ -15,7 +15,7 @@ pnpm-debug.log*
 
 /mongodb
 /config/db-client.js
-/config/env.js
+
 libv/nodemailer.js
 
 
