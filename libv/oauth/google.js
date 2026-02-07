@@ -4,5 +4,5 @@ import {env} from "../../config/env.js";
 export const google=new Google(
     env.GOOGLE_CLIENT_ID,
     env.GOOGLE_CLIENT_SECRET,
-    `${env.GOOGLE_callbackURL}` //redirect URL
+    env.GOOGLE_callbackURL //redirect URL
 );
