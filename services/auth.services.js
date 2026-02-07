@@ -1,4 +1,4 @@
-import { oauthAccountsTable, passwordResetTokensTable, sessionsTable, Users, VerifyEmailTokens } from "../DrizzleORM/drizzle/schema.js";
+import { oauthAccountsTable, passwordResetTokensTable, sessionsTable, Users, verifyEmailTokens as VerifyEmailTokens } from "../DrizzleORM/drizzle/schema.js";
 import {db} from "../DrizzleORM/config/db.js"
 import { and, eq, gt,lt } from "drizzle-orm";
 // import { sendEmail } from "../libv/nodemailer.js";
@@ -30,8 +30,8 @@ export const getUserbyId=async(id)=>
 export const addToDb=async({name,email,password})=>
 {
      const hashedPassword = await argon2.hash(password);
-
-return db.insert(Users).values({name:name,email:email,password:hashedPassword});
+// MySQL: return db.insert(Users).values({name:name,email:email,password:hashedPassword});
+return db.insert(Users).values({name:name,email:email,password:hashedPassword}).returning({ id: Users.id });
 }
 
 export const validUser=async({email,password})=>
@@ -56,7 +56,7 @@ export const validUser=async({email,password})=>
             id: user.id,
             name: user.name,
             email: user.email,
-            is_email_valid: user.Validemail,
+            is_email_valid: user.isEmailValid,
         }
     }  //here we can return entire user too instead of being specific.
 };  
@@ -80,10 +80,11 @@ export const generateToken=({id,email,name})=>
 export const createSession = async (userId, { ip, userAgent }) => {
   const [result] = await db
     .insert(sessionsTable)
-    .values({ userId, ip, userAgent });
+    .values({ userId, ip, userAgent })
+    .returning({ id: sessionsTable.id });
 // console.log("Session creation result:", result);
-  // MySQL / SQLite way
-  const sessionId = result.insertId;
+  // MySQL: const sessionId = result.insertId;
+  const sessionId = result.id;
 
   if (!sessionId) {
     throw new Error("Failed to create session");
@@ -195,7 +196,7 @@ const sessionId=await createSession(data.id,{
 
     res.cookie("refresh_token",refreshToken,{
         ...baseConfig,
-        maxAge:7*24*60*60*1000, //7 days
+        maxAge:1*24*60*60*1000, //1 days
     });
     
     req.flash("success","Registered successfully");
@@ -345,7 +346,7 @@ export async function getUsersWithOauthId({ email, provider }) {
       id: Users.id,
       name: Users.name,
       email: Users.email,
-      isEmailValid: Users.Validemail, 
+      isEmailValid: Users.isEmailValid, 
       providerAccountId: oauthAccountsTable.providerAccountId,
       provider: oauthAccountsTable.provider,
     })
@@ -381,14 +382,15 @@ export async function createUserwithOauth({
     email?.split("@")[0] ||
     "User";
   const user = await db.transaction(async (trx) => {
+    // MySQL: .$returningId()
     const [user] = await trx
       .insert(Users)
       .values({
         email,
         name:safeName,
-        Validemail: true, 
+        isEmailValid: true, 
       })
-      .$returningId();
+      .returning({ id: Users.id });
 
     await trx.insert(oauthAccountsTable).values({
       provider,

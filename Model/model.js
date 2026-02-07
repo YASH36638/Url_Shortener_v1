@@ -1,5 +1,5 @@
 import { eq ,and, sql} from "drizzle-orm";
-import { shortLinksTable,Users, VerifyEmailTokens } from "../DrizzleORM/drizzle/schema.js";
+import { shortLinksTable,Users, verifyEmailTokens as VerifyEmailTokens } from "../DrizzleORM/drizzle/schema.js";
 
 import {db} from "../DrizzleORM/config/db.js"
 
@@ -93,7 +93,7 @@ export const setEmailValid=async(email)=>
 {
     return await db
     .update(Users)
-    .set({ Validemail: true })
+    .set({ isEmailValid: true })
     .where(eq(Users.email, email));
 }
 

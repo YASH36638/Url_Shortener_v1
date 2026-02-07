@@ -88,14 +88,15 @@ export const postRegister = async (req, res) => {
     const [regUser] = await addToDb({ name, email, password });
 
 
+    // MySQL: id: regUser.insertId, userId: regUser.insertId
     const regData = {
-        id: regUser.insertId,
+        id: regUser.id,
         name,
         email,
         password,
         is_email_valid: false,
     }
-    await sendVerificationEmailLink({ userId: regUser.insertId, email: regData.email });
+    await sendVerificationEmailLink({ userId: regUser.id, email: regData.email });
     redirectUserHomePage(req, res, regData);
 
 }
@@ -116,7 +117,7 @@ export const getProfile = async (req, res) => {
         avatarUrl:user.avatarUrl,
         createdAt: totLinks.createdAt,
         linksCount: totLinks.count,
-        isEmailValid: user.Validemail,
+        isEmailValid: user.isEmailValid,
 
     }
 
@@ -517,7 +518,8 @@ export const getGoogleLoginCallBack=async(req,res)=>
             })
         }
 
-
+        res.clearCookie("google_code_verifier");
+        res.clearCookie("google_oauth_state");
         req.flash("success","Logged in succesfully");
         await redirectUserHomePage(req, res, user)
 
@@ -623,6 +625,7 @@ export const getGithubLoginCallBack=async(req,res)=>
             })
         }
 
+        res.clearCookie("github_oauth_state");
         req.flash("success","Logged in succesfully");
         await redirectUserHomePage(req, res, user)
 

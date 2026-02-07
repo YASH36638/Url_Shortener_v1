@@ -1,23 +1,31 @@
-# Node modules
+
 node_modules/
-
-# Environment files
+DrizzleORM/node_modules/
+DrizzleORM/package-lock.json
+DrizzleORM/package.json
 .env
+.env.*
+!.env.example
+DrizzleORM/.env
 
-# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
 
 /mongodb
-
 /config/db-client.js
-
 /config/env.js
+libv/nodemailer.js
+
 
 public/uploads/
 public/avatars/
 
-node_modules/
-DrizzleORM/node_modules/
-DrizzleORM/.env
 
-libv/nodemailer.js
+dist/
+build/
+
+.DS_Store
+.vscode/
+.idea/
