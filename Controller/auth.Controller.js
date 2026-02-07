@@ -31,6 +31,7 @@ export const getRegisterPage = (req, res) => {
 }
 
 export const getLoginPage = (req, res) => {
+    
     res.render("auth/login", { errors: req.flash("errors") , success: req.flash("success") });
 }
 
