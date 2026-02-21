@@ -99,6 +99,19 @@ body {
     margin: 40px auto;
 }
 
+@media (max-width: 768px) {
+    #container {
+        margin: 24px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    #container {
+        margin: 20px 12px;
+        padding: 24px 20px;
+    }
+}
+
 /* Heading */
 #container h1 {
     text-align: center;
@@ -191,11 +204,6 @@ li {
     line-height: 1.5;
 }
 
-/* Links */
-.actions {
-  display: flex;
-  gap: 14px;
-}
 
 .action-link {
   font-size: 13px;
@@ -373,19 +381,19 @@ footer {
 }
 
 /* ================= PROFILE PAGE ================= */
-
+/* Match main page #container: same max-width, padding, spacing */
 .profile-container {
-    display: flex;
-    justify-content: center;
-    margin: 50px 16px;
+    width: 100%;
+    max-width: 520px;
+    margin: 40px auto;
+    padding: 0 16px;
 }
 
 .profile-card {
     background: #ffffff;
     width: 100%;
-    max-width: 420px;
-    padding: 36px;
-    border-radius: 16px;
+    padding: 32px 36px;
+    border-radius: 14px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     text-align: center;
 }
@@ -447,11 +455,30 @@ footer {
     font-weight: 600;
 }
 
-/* Actions */
+.info-row .value.verified {
+    color: #065f46;
+}
+
+.info-row .value.unverified {
+    color: #b91c1c;
+}
+
+/* Profile success message */
+.profile-card .success-message {
+    background-color: #e6fffa;
+    color: #065f46;
+    border: 1px solid #99f6e4;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Actions - 2x2 grid (same on all screen sizes) */
 .profile-actions {
-     display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
 .btn-secondary {
@@ -601,19 +628,12 @@ display: flex;
 }
 
 
+/* Edit profile / pages using page-container - same responsive as profile */
 .page-container {
   width: 100%;
-  padding: 20px;
-}
-
-/* Card */
-.profile-card {
-  max-width: 420px;
-  margin: auto;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 30px 28px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 0 16px;
 }
 
 /* Title */
@@ -685,15 +705,31 @@ display: flex;
   transform: scale(0.98);
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .profile-card {
-    padding: 24px 20px;
-  }
+/* Profile responsive - full width with side spacing only, no format change */
+@media (max-width: 768px) {
+    .profile-container {
+        margin: 24px 16px;
+        padding: 0;
+    }
 
-  .card-title {
-    font-size: 20px;
-  }
+    .page-container {
+        margin: 24px 16px;
+        padding: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        margin: 20px 12px;
+    }
+
+    .page-container {
+        margin: 20px 12px;
+    }
+
+    .card-title {
+        font-size: 20px;
+    }
 }
 
 /* login */
@@ -768,11 +804,9 @@ display: flex;
 }
 
 .profile-avatar img {
-  width: 90px;
-  height: 100px;
-  object-fit: cover;   /* prevents stretching */
-  border-radius: 50%;  /* makes it circular */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
   display: block;
 }
-
-
