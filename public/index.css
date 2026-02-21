@@ -15,23 +15,79 @@ body {
 }
 
 /* ---------------- HEADER / NAVBAR ---------------- */
-nav {
+/* ---------------- NAVBAR ---------------- */
+
+.navbar {
     background: #1b2f5c;
-    padding: 14px;
-    text-align: center;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
 }
 
-nav a {
+.nav-brand {
     color: #ffffff;
-    margin: 0 12px;
+    font-weight: 700;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+/* Hide checkbox */
+.menu-toggle {
+    display: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #ffffff;
     text-decoration: none;
     font-weight: 500;
+    font-size: 14px;
 }
 
-nav a:hover {
+.nav-links a:hover {
     text-decoration: underline;
 }
 
+/* Hamburger */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+/* ---------------- MOBILE ---------------- */
+
+@media (max-width: 768px) {
+
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 55px;
+        right: 0;
+        background: #1b2f5c;
+        flex-direction: column;
+        width: 200px;
+        padding: 16px;
+        gap: 16px;
+        display: none;
+        border-radius: 0 0 0 12px;
+    }
+
+    /* When checkbox is checked */
+    .menu-toggle:checked ~ .nav-links {
+        display: flex;
+    }
+}
 /* ---------------- MAIN CONTAINER ---------------- */
 #container {
     background: #ffffff;
@@ -718,3 +774,5 @@ display: flex;
   border-radius: 50%;  /* makes it circular */
   display: block;
 }
+
+
