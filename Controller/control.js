@@ -14,11 +14,9 @@ export const postShortend=async (req, res) => {
         return res.redirect("/");
     }
     let { url, code } = req.body.user;
-    const safeCode=code.trim();
-
-    if (!code || code.trim() === "") {
-        code = crypto.randomBytes(4).toString('hex');
-    }
+    let safeCode=code.trim();
+    safeCode += crypto.randomBytes(4).toString('hex');
+    
     if (!url) {
         return res.status(400).send("URL is required.");
     }
@@ -29,9 +27,9 @@ export const postShortend=async (req, res) => {
     }
 
     // links[code] = url;
-    console.log(code);
+    // console.log(code);
     
-    console.log(safeCode);
+    // console.log(safeCode);
     await saveLinks({url,safeCode,id});
     res.redirect("/");
 }

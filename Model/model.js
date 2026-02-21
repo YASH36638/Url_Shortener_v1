@@ -15,10 +15,10 @@ export const saveLinks=async(link)=>
      return res;
 }
 
-export const getUrlByShortcode=async(code,id)=>
+export const getUrlByShortcode=async(code)=>
 {
   
-    const res=await db.select().from(shortLinksTable).where(and(eq(shortLinksTable.shortCode, code),eq(shortLinksTable.userId,id)));
+    const res=await db.select().from(shortLinksTable).where(eq(shortLinksTable.shortCode, code));
 
     return res[0]??null;
 }

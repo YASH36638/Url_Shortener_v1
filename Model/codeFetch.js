@@ -3,16 +3,12 @@ import { getUrlByShortcode } from "./model.js";
 
 export const redirectLinks= async (req, res) => {
     // const links = await loadLinks();
-  if(!req.user)
-  {
-    // console.log("req is",req);
-    return res.redirect("/");
-  }
+  
   if (req.params.code === "favicon.ico") {
     return res.status(204).end();
   }
     const { code } = req.params;
-    const link=await getUrlByShortcode(code,req.user.id)
+    const link=await getUrlByShortcode(code)
     // console.log(link)
     
     // if (link) {
