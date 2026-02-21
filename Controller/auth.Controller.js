@@ -636,7 +636,13 @@ export const getGithubLoginCallBack=async(req,res)=>
 export const getSetPasswordPage=async(req,res)=>
 {
     if(!req.user) return res.redirect("/login");
-
+    const user=await getUserbyId(req.user.id);
+    console.log(user);
+    if(user[0].password)
+    {
+        req.flash("errors","Password already set for this account");
+        return res.redirect("/profile");
+    }
     return res.render("auth/set-password",{errors:req.flash("errors"),success:req.flash("success")});
 }
 

@@ -15,11 +15,7 @@
       
   <div class="profile-card">
     
-   <% if (typeof success !== "undefined" && success.length > 0) { %>
-  <div class="success-message">
-    <p><%= success[0] %></p>
-  </div>
-<% } %>
+   
     <div class="profile-avatar">
   <% if (user.avatarUrl) { %>
     <img
@@ -77,6 +73,19 @@
     </span>
   <% } %>
 </div>
+
+<br> 
+<% if (typeof success !== "undefined" && success.length > 0) { %>
+  <div class="success">
+    <p><%= success[0] %></p>
+  </div>
+<% } %>
+
+  <% if (typeof errors !== "undefined" && errors.length > 0) { %>
+  <div class="error">
+    <p><%= errors[0] %></p>
+  </div>
+<% } %>
     </div>
 
     <div class="profile-actions">
