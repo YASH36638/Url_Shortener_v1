@@ -1,3 +1,6 @@
+**Disclaimer** - **Status: Paused**  
+This project is currently on hold. It requires continuous logins/authentication to function properly, which is currently unmaintained. All code and history are available, but active development is paused.
+
 # 🔗 URL Shortener – Full Stack Web Application
 
 A production-ready URL Shortener web application built using **Node.js, Express, Drizzle ORM, MySQL, and EJS**, featuring authentication, OAuth login, profile management, and secure route handling.
